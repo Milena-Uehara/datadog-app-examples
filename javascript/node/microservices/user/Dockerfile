@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:18.16.0-alpine
 
 RUN apk add --no-cache tini git
 
@@ -12,7 +12,7 @@ RUN yarn --pure-lockfile && yarn cache clean
 COPY src /usr/src/app/src/
 COPY server.js /usr/src/app/
 
-EXPOSE 8080
+EXPOSE 8081
 USER node
 
 ENTRYPOINT ["/sbin/tini", "--"]

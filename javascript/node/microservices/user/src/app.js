@@ -9,6 +9,7 @@ const logger = require('./logger')
 
 const app = express()
 
+//Faz o build do schema (defines the structure and contents of your data).
 const schema = graphql.buildSchema(`
   type Query {
     users: [User]

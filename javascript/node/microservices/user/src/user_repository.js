@@ -1,6 +1,9 @@
 'use strict'
 
 const db = require('./db')
+
+//A collection is a grouping of MongoDB documents.
+//Lista de users a serem adicionados na Collection.
 const users = [
   {
     _id: 'alice',
@@ -14,6 +17,7 @@ const users = [
   }
 ]
 
+//Faz o insert+update dos users na Collection users.
 db.collection('users').then(col => {
   const operations = users.map(user => ({
     updateOne: {
@@ -26,6 +30,8 @@ db.collection('users').then(col => {
   col.bulkWrite(operations)
 })
 
+//Lista a Collection users.
+//db.collection('users').find
 const userRepository = {
   all () {
     return db.collection('users')

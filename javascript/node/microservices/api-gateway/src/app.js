@@ -14,9 +14,9 @@ app.use(expressWinston.logger({
 }))
 
 app.get('/users', (req, res) => {
-  axios.get('http://auth:8080/.well-known/jwks.json')
+  axios.get('http://datadog-auth-app-svc.datadog-app.svc.cluster.local:8082/.well-known/jwks.json')
     .then(() => {
-      return axios.post('http://user:8080/graphql', {
+      return axios.post('http://datadog-user-app-svc:8081/graphql', {
         query: `{ users { name age } }`
       }, {
         headers: { 'Content-Type': 'application/json' }

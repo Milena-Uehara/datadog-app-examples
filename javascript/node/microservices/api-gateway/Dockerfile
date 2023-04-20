@@ -1,6 +1,8 @@
-FROM node:8-alpine
+#FROM node:8-alpine
+FROM node:18.16.0-alpine
 
 RUN apk add --no-cache tini
+RUN apk add --no-cache curl
 
 ENV NODE_ENV=production
 
@@ -13,7 +15,8 @@ COPY src /usr/src/app/src/
 COPY server.js /usr/src/app/
 
 EXPOSE 8080
-USER node
+USER root
+
 
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD [ "node", "server" ]

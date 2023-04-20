@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datadog-user-app
+  namespace: datadog-app
+  labels:
+    app: datadog-user-app
+    tags.datadoghq.com/env: production
+    tags.datadoghq.com/service: datadog-user-app
+    tags.datadoghq.com/version: v1.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datadog-user-app
+  template:
+    metadata:
+      labels:
+        app: datadog-user-app
+        tags.datadoghq.com/env: production
+        tags.datadoghq.com/service: datadog-user-app
+        tags.datadoghq.com/version: v1.0
+        admission.datadoghq.com/enabled: "true"
+      annotations:
+        admission.datadoghq.com/js-lib.version: v3.17.1
+    spec:
+      imagePullSecrets:
+      - name: dockerhub
+      containers:
+      - name: datadog-user-app
+        image: uehara96/node-teste:vddog-user-app
+        ports:
+        - containerPort: 8081
+        imagePullPolicy: Always
+        env:
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: datadog-user-app-svc
+  namespace: datadog-app
+spec:
+  type: NodePort
+  selector:
+    app: datadog-user-app
+  ports:
+      # By default and for convenience, the `targetPort` is set to the same value as the `port` field.
+    - port: 8081
+      targetPort: 8081
